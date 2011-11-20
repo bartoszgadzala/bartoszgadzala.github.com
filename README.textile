@@ -2,11 +2,6 @@ h1. This is the data for my blog
 
 It is automatically transformed by "Jekyll":http://github.com/mojombo/jekyll into a static site whenever I push this repository to GitHub.
 
-h1. License
+You may feel free to re-use any part of the structure, design, and layout of this site; it is all licensed under the MIT License. However, the content of the site (blog posts and page content) is licensed under a Creative Commons Attribution license (you may use it, but must give attribution).
 
-The following directories and their contents are Copyright Bartosz Gadzała. You may not reuse anything therein without my permission:
-
-* _posts/
-* images/
-
-All other directories and files are MIT Licensed. Feel free to use the HTML and CSS as you please.
+Copyright (c) 2011 Bartosz Gadzała. Rights reserved as indicated above.
