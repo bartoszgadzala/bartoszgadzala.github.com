@@ -1,3 +1,44 @@
+---
+layout: post
+title: Eclipse theme for Pygments
+published: true
+---
+
+This blog is powered by "Jekyll":https://github.com/mojombo/jekyll and uses "Pygmets":http://pygments.org/ for syntax highlighting. I'm really used to Eclipse style, so I've wanted to use it on my blog, too. Because I couldn't find any existing style, I've tried to do it myself. Below you can see it in action. 
+
+{% highlight java %}
+package com.yourCompany.aPackage;
+
+/**
+ * This is about <code>ClassName</code>.
+ * {@link com.yourCompany.aPackage.Interface}
+ * @author author
+ * @deprecated use <code>OtherClass</code>
+ */
+public class ClassName<E> implements InterfaceName<String> {
+	enum Color { RED, GREEN, BLUE };
+	/* This comment may span multiple lines. */
+	static Object staticField;
+	// This comment may span only this line
+	private E field;
+	private AbstractClassName field2;
+	// TASK: refactor
+	@SuppressWarnings(value="all")
+	public int foo(Integer parameter) {
+		abstractMethod();
+		int local= 42*hashCode();
+		staticMethod();
+		return bar(local) + parameter;
+	}
+}
+{% endhighlight %}
+
+
+As you can see, not everything works as expected. For example, JavaDoc should be in blue. Nevertheless it's a good beginnings. I will try to resolve all those issues, but I'm not sure it's possible - if you know how to improve it, please write a comment. 
+
+I'm publishing whole style in hope that it will be helpfull for someone who are looking for Eclipse-like theme for Pygments.
+
+{% highlight css %}
 .highlight  { background: #ffffff; }
 .highlight .c { color: #3F7F5F; font-style: italic } /* Comment */
 .highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
@@ -60,3 +101,5 @@
 .highlight .vg { color: #000000 } /* Name.Variable.Global */
 .highlight .vi { color: #000000 } /* Name.Variable.Instance */
 .highlight .il { color: #000000 } /* Literal.Number.Integer.Long */
+{% endhighlight %}
+
