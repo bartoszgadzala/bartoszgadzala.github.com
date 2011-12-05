@@ -1,0 +1,60 @@
+---
+layout: post
+title: Quickstart with Dart language - part 1
+published: true
+---
+
+According to "Dart's technical overview":http://www.dartlang.org/docs/technical-overview/index.html:
+
+bq. Dart is a new class-based programming language for creating structured web applications. Developed with the goals of simplicity, efficiency, and scalability, the Dart language combines powerful new language features with familiar language constructs into a clear, readable syntax.
+
+Dart comes with Dart Editor which is based on Eclipse, so if you are familiar with Eclipse, you won't have any problems using it. Dart Editor is available "here":http://gsdview.appspot.com/dart-editor-archive-integration/latest/ for Linux, Mac and Windows (both 32-bit and 64-bit). After downloading, simply unzip it in choosen directory and run DartEditor executable - check "this":http://www.dartlang.org/docs/getting-started/editor/index-linux.html tutorial if you are stuck.
+
+To create new Dart application, choose _File / New Application_ and provide name (I've used *Quickstart* but you can choose other if you like):
+
+!/images/blog/posts/2011-12-05/new_dart_application.png(New Dart application)!
+
+This will generate simple Hello World application in Dart. There are only two files (*Note:* they will be named differently, if you've choosed different application name):
+* Quickstart.html - template of application view:
+
+{% highlight html %}
+<html>
+  <head>
+    <title>Quickstart</title>
+  </head>
+  <body>
+    <h1>Quickstart</h1>
+    <h2 id="status">dart is not running</h2>
+    <script type="text/javascript" src="Quickstart.dart.app.js"></script>
+  </body>
+</html>
+{% endhighlight %}
+
+* Quickstart.dart - application code:
+
+{% highlight javascript %}
+#import('dart:html');
+
+class Quickstart {
+
+  Quickstart() {
+  }
+
+  void run() {
+    write("Hello World!");
+  }
+
+  void write(String message) {
+    // the HTML library defines a global "document" variable
+    document.query('#status').innerHTML = message;
+  }
+}
+
+void main() {
+  new Quickstart().run();
+}
+{% endhighlight %}
+
+To run application, choose _Tools / Run in Browser_, which will open new browser window with our application within:
+
+!/images/blog/posts/2011-12-05/dart_in_action.png(Dart in action)!
