@@ -2,6 +2,8 @@
 layout: post
 title: Quickstart with Dart language - part 1
 published: true
+categories:
+- dart
 ---
 
 According to "Dart's technical overview":http://www.dartlang.org/docs/technical-overview/index.html:

@@ -2,6 +2,8 @@
 layout: post
 title: Eclipse theme for Pygments
 published: true
+categories:
+- jekyll
 ---
 
 This blog is powered by "Jekyll":https://github.com/mojombo/jekyll and uses "Pygmets":http://pygments.org/ for syntax highlighting. I'm really used to Eclipse style, so I've wanted to use it on my blog, too. Because I couldn't find any existing style, I've tried to do it myself. Below you can see it in action. 
