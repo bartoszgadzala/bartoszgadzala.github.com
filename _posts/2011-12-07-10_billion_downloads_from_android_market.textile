@@ -1,0 +1,9 @@
+---
+layout: post
+title: 10 billion downloads from Android Market
+published: true
+categories:
+- android
+---
+
+To celebrate 10 billionth downloaded application from Android Market, special offer has been prepared: starting today, for 10 days, selected 10 applications can be purchased for as little as 10 cents. Check "Android Market":http://goo.gl/HVCF1 for _set of the day_ :-)
