@@ -60,3 +60,5 @@ void main() {
 To run application, choose _Tools / Run in Browser_, which will open new browser window with our application within:
 
 !/images/blog/posts/2011-12-05/dart_in_action.png(Dart in action)!
+
+Go to "2nd part":/dart/2011/12/07/quickstart_with-dart-language-part2.html if you want to learn how to use Dart VM.

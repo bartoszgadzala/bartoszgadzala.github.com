@@ -1,0 +1,37 @@
+---
+layout: post
+title: Quickstart with Dart language - part 2
+published: true
+categories:
+- dart
+---
+
+This is the 2nd part of quickstart with Dart where you will learn how to launch Dart programs on Dart VM. Check the "1st part":/dart/2011/12/05/quickstart_with-dart-language-part1.html if you want to lear how to create and run simple Dart application using Dart Editor.
+
+Applications in Dart could be:
+* compiled to Javascript that runs in brower (currenty Chrome, Firefox 4+ and Safari 5+ are supported, but while running examples that comes with Dart Editor, some of them didn't run properly in Firefox 8 but were fine in Chrome) - this method was shown in part 1,
+* executed in "Dartboard":http://try.dartlang.org/,
+* executed in Dart VM - experimental.
+
+I will show the 3rd method - using Dart VM. Because Dart VM is experimental right now, there are no binaries provided by Dart team - you have to "compile it from source":http://code.google.com/p/dart/wiki/Building#Building_the_standalone_VM, what can be tricky, especially on Windows. However there is a simple method which will be used by me - binaries of Dart VM are availble at "DartForce":http://www.dartforce.com/dev/index.html for Linux, Max OS X and Windows - go there and follow instructions for your OS. 
+
+*Note*: on my Ubuntu 12.04 I had to install libssl0.9.8 (@sudo apt-get install libssl0.9.8@), because while starting Dart VM an error has occurred: 
+@dart_bin: error while loading shared libraries: libcrypto.so.0.9.8: cannot open shared object file: No such file or directory@
+
+After installing Dart VM, you can configure it in Dart Editor - select _Tools / Preferences_ from menu, choose _Launch_ branch and set _Dart VM executable location_. Unfortunatelly currently there is no way to launch applications directly from Dart Editor using Dart VM - I suppose it is for future use. Or maybe I'm missing something? I've created "Issue 728":https://code.google.com/p/dart/issues/detail?id=728 - please star it, if it is important for you.
+
+!/images/blog/posts/2011-12-07/configure_dart_vm.png(Configuration of Dart VM in Dart Editor)!
+
+To test Dart VM, create new file @hello.dart@:
+
+{% highlight javascript %}
+void main() {
+  print("hello");
+}
+{% endhighlight %}
+
+To run it, execute: @path/to/dart_bin path/to/hello.dart@
+
+If everything is ok, you should see:
+@hello@ 
+on you console.
