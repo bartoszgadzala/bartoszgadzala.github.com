@@ -1,0 +1,16 @@
+---
+layout: post
+title: Quickstart with Dart language - part 3
+published: true
+categories:
+- dart
+---
+
+In the "2nd part":/dart/2011/12/07/quickstart_with-dart-language-part2.html I've tried to execute Dart application in Dart VM directly from Dart Editor, but version _0.1.0.201111291725, Build 1910_ doesn't support such scenario. It will be supported in future versions. I you would like to see what next version of Dart Editor brings, you have two options:
+* compile it yourself - there is a great tutorial explaining "how to setup a Dart build environment":http://dartwatch.com/index.php/2011/10/setting-up-a-dart-build-environment-on-xubuntu-11-04/ and "how to build the Dart Editor":http://dartwatch.com/index.php/2011/10/building-the-stand-alone-dart-editor-darteditor-ide/ by Chris Buckett,
+* use latest version from "Dart Editor continuous archive":http://gsdview.appspot.com/dart-editor-archive-continuous/latest/ (there are also binaries of Dart VM for Linux and Mac OS X)
+
+Newest version allows to set preffered browser and adds _Run in Dart Server_ button (currently disabled) which will execute application directly in Dart VM, I guess.
+
+!/images/blog/posts/2011-12-08/configure_dart_editor.png(More configure options in latest version)!
+
