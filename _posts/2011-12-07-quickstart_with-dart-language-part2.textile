@@ -28,7 +28,7 @@ I suppose that I have to try newest Dart Editor then - I will describe how to do
 
 To test Dart VM, create new file @hello.dart@:
 
-{% highlight javascript %}
+{% highlight javascript linenos %}
 void main() {
   print("hello");
 }

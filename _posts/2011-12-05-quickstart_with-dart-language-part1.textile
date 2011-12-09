@@ -19,7 +19,7 @@ To create new Dart application, choose _File / New Application_ and provide name
 This will generate simple Hello World application in Dart. There are only two files (*Note:* they will be named differently, if you've choosed different application name):
 * Quickstart.html - template of application view:
 
-{% highlight html %}
+{% highlight html linenos %}
 <html>
   <head>
     <title>Quickstart</title>
@@ -34,7 +34,7 @@ This will generate simple Hello World application in Dart. There are only two fi
 
 * Quickstart.dart - application code:
 
-{% highlight javascript %}
+{% highlight javascript linenos %}
 #import('dart:html');
 
 class Quickstart {
