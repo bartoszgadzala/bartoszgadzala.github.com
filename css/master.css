@@ -22,7 +22,7 @@ a:visited {
 }
 
 #wrapper {
-  width: 60em;
+  width: 50em;
   margin: 2em auto 0;
   padding: 0;
   background: #fff;
@@ -197,11 +197,11 @@ div.related {
 }
 
 #home_left {
-  width: 39em;
+  width: 30em;
 }
 
 #home_right {
-  width: 16em;
+  width: 15em;
   margin-left: 1em;
 }
 
@@ -239,7 +239,7 @@ div.related {
 
 #github-projects.big .repo {
   float: left;
-  width: 31.5em;
+  width: 25em;
   margin: 1.2em 1em 0 0;
   display: inline-block;
   float: none;
