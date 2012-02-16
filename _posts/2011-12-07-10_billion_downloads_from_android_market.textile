@@ -1,6 +1,8 @@
 ---
 layout: post
 title: 10 billion downloads from Android Market
+author: Bartosz Gadzała
+date: 2011-12-07
 published: true
 categories:
 - android

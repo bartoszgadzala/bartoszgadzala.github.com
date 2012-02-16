@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Quickstart with Dart language - part 1
+date: 2011-12-05
+author: Bartosz Gadzała
 published: true
 categories:
 - dart

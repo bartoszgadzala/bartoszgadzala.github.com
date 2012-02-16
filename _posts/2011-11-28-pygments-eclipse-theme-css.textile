@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Eclipse theme for Pygments
+date: 2011-11-28
+author: Bartosz Gadzała
 published: true
 categories:
 - jekyll
