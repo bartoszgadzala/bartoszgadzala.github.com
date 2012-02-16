@@ -17,9 +17,7 @@ There are two Virgo distributions available: Virgo Tomcat Server and Virgo Jetty
 
 After downloading VTS, simply extract it - if you haven't done this already, ofcourse. Now, we can extract VS archive and then move/copy content of _dist_ directory to _repository/usr_ in your new VTS. The last step is referencing Snaps from _initialArtifacts_ property in _config/org.eclipse.virgo.kernel.userregion.properties_:
 
-{% highlight text %}
-initialArtifacts=repository:plan/org.eclipse.virgo.kernel.userregion.springdm, repository:plan/org.eclipse.virgo.web.tomcat, repository:plan/org.eclipse.virgo.snaps
-{% endhighlight %}
+@initialArtifacts=repository:plan/org.eclipse.virgo.kernel.userregion.springdm, repository:plan/org.eclipse.virgo.web.tomcat, repository:plan/org.eclipse.virgo.snaps@
 
 To confirm that everything is working, copy content of _sample_ directory (from archive of VS) to _pickup_ directory of VTS and start the server:
 
