@@ -1,0 +1,46 @@
+---
+layout: post
+title: Configuration of Virgo Snaps environment
+author: Bartosz Gadzała
+date: 2012-02-16
+published: true
+categories:
+- virgo
+- snaps
+---
+
+I'm starting new project - web application for managing books and storing book in epub format. Because I'm an enthusiast of OSGi, it will be using "Virgo Snaps":http://www.eclipse.org/virgo/documentation/virgo-documentation-3.0.2.RELEASE/docs/snaps-guide/html/index.html which allows to create dynamic web application from multiple bundles where each of them can handle only part of requests.
+
+In Virgo Snaps (referred later as VS), bundles can be represented as a tree, where parents are reffered to as the hosts and children as snaps. More about Virgo Snaps in official documentation.
+
+There are two Virgo distributions available: Virgo Tomcat Server and Virgo Jetty Server. Currently (version 3.0.2.RELEASE) only Virgo Tomcat Server (referred later as VTS) is supported by VS. That's why, we need to grab latest VTS from "download":http://www.eclipse.org/virgo/download/ page. Because VS is distributed separately, it need to be downloaded too.
+
+After downloading VTS, simply extract it - if you haven't done this already, ofcourse. Now, we can extract VS archive and then move/copy content of _dist_ directory to _repository/usr_ in your new VTS. The last step is referencing Snaps from _initialArtifacts_ property in _config/org.eclipse.virgo.kernel.userregion.properties_:
+
+{% highlight text %}
+initialArtifacts=repository:plan/org.eclipse.virgo.kernel.userregion.springdm, repository:plan/org.eclipse.virgo.web.tomcat, repository:plan/org.eclipse.virgo.snaps
+{% endhighlight %}
+
+To confirm that everything is working, copy content of _sample_ directory (from archive of VS) to _pickup_ directory of VTS and start the server:
+
+{% highlight bash %}
+# Staring VTS under Linux
+$ JAVA_HOME=/usr/lib/jvm/java-6-sun/ ./bin/startup.sh
+{% endhighlight %}
+
+You should see in logs:
+
+{% highlight text %}
+<DE0004I> Starting plan 'org.eclipse.virgo.snaps' version '3.0.0'. 
+<DE0004I> Starting bundle 'org.eclipse.virgo.snaps.api' version '3.0.2.RELEASE'. 
+<DE0005I> Started bundle 'org.eclipse.virgo.snaps.api' version '3.0.2.RELEASE'. 
+<DE0004I> Starting bundle 'org.eclipse.virgo.snaps.core' version '3.0.2.RELEASE'. 
+<DE0005I> Started bundle 'org.eclipse.virgo.snaps.core' version '3.0.2.RELEASE'. 
+<DE0005I> Started plan 'org.eclipse.virgo.snaps' version '3.0.0'.
+{% endhighlight %}
+
+Sample application should be available at "http://localhost:8080/animal-menu-bar/":http://localhost:8080/animal-menu-bar/ address.
+
+You can manage state of bundles using "Admin Console":http://www.eclipse.org/virgo/documentation/virgo-documentation-3.0.2.RELEASE/docs/virgo-user-guide/html/ch07.html at "http://localhost:8080/admin/":http://localhost:8080/admin/. For example stopping bundle _org.eclipse.virgo.snaps.sample.cat_ will remove _Cat_ menu option.
+
+In next post, I will show how to develop simple application with Virgo Snaps.
