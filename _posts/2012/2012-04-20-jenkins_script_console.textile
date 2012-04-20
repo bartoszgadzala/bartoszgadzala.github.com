@@ -1,0 +1,85 @@
+---
+layout: post
+title: Jenkins/Hudson CI - script console
+author: Bartosz Gadzała
+date: 2012-04-20
+published: true
+categories:
+- ci
+---
+
+I've noticed that one extremely useful feature of Hudson / Jenkins CI is not commonly known / used. It's script console, which simplifies jobs management.
+
+One of the common task is triggering build by hand - it can be required in case of previous failure when some part of build infrastructure (let it be a artifact repository) was down - maybe it will be triggered in future by another SCM change or by cron, but in some cases it have to be done as soon as possible and then triggering by hand by administrator is useful. But what if you have to trigger 100 jobs? Clicking on each one could be very cumbersome but fortunatelly we've a _script console_! Simply go to _Manage Jenkins / Script Console_ and run following Groovy code:
+
+{% highlight java %}
+import hudson.model.*
+import hudson.maven.*
+import hudson.tasks.*
+
+// for each job
+for (item in Hudson.instance.items) {
+	// select only with prefix "Holo"
+	if (item.name.startsWith("Holo")) {
+		// and shedule it
+		println("Scheduling build for job: " + item.name)
+		item.scheduleBuild()
+	}
+}
+{% endhighlight %}
+
+In our example we've scheduled jobs with specified prefix, which shows how to select only special subset of all jobs. Below out script in action.
+
+!/images/blog/posts/2012-04-20/jenkins_script_console.png(Scheduling build of multiple jobs from script console)!
+
+Of course, we are not limited to scheduling only. The second useful case are bulk modyfications of existing jobs. In my opinion using script console for it is the simplest and fastest solution - even better than filesystem modifications. Below example of adding permission for specified user to all projects:
+ 
+{% highlight java %}
+import hudson.model.*
+import hudson.maven.*
+import hudson.tasks.*
+import hudson.security.*
+
+// collection of permissions for user
+def permissionsToAdd = [
+	Permission.fromId("hudson.model.Item.Release"),
+	Permission.fromId("hudson.model.Run.Update"),
+	Permission.fromId("hudson.model.Item.Workspace"),
+	Permission.fromId("hudson.model.Item.Read"),
+	Permission.fromId("hudson.model.Item.Build")
+]
+// name of user for whom permissions will be granted
+def user = "bartek";
+
+// for each project
+for(item in Hudson.instance.items) {
+	println("Processing project: " + item.name)
+
+	// get authorization matrix
+	AuthorizationMatrixProperty authProperties = 
+		item.getProperty("hudson.security.AuthorizationMatrixProperty");
+	if (authProperties == null) {
+		// create new authorization matrix for project it there isn't any
+		authProperties = new AuthorizationMatrixProperty()
+		item.addProperty(authProperties)
+	}
+
+
+	// for each permission to grant
+	for (Permission permissionToAdd : permissionsToAdd) {
+		// check if user already has it
+		if (authProperties.hasPermission(user, permissionToAdd)) {
+			println("[" + user + "] already has [" + permissionToAdd.id + "]")
+		} else {
+			// and grant it to user
+			println("Adding [" + permissionToAdd.id + "] to [" + user + "]")
+			authProperties.add(permissionToAdd, user)
+		}
+	}
+
+	// save changes
+	item.save()
+}
+{% endhighlight %}
+
+I hope that my tips will be useful for someone like they were for me. If you've some useful script, please share in comments. Happy scripting!
