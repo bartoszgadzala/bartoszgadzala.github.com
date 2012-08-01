@@ -1,0 +1,180 @@
+---
+layout: post
+title: Installing vsftpd on CentOS 6
+author: Bartosz Gadzała
+date: 2012-08-01
+published: true
+categories:
+- linux
+---
+
+These instructions are based on "CentOS Wiki":http://wiki.centos.org/HowTos/Chroot_Vsftpd_with_non-system_users and describe how to configure vsftpd on CentOS 6 with virtual users.
+
+To install vsftpd and utilities required for users database managment simply run:
+
+{% highlight bash %}
+sudo yum -y install vsftpd db4-utils
+{% endhighlight %}
+
+Before creating new configuration file, the old one should be preserved (to simply rollback any changes).
+
+{% highlight bash %}
+mv /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.origo
+
+cat <<EOF> /etc/vsftpd/vsftpd.conf
+# When enabled, anonymous users are only allowed to download world-readable files
+anon_world_readable_only=NO
+# When enabled, anonymous users are allowed to log in. The usernames anonymous and ftp are accepted
+anonymous_enable=NO
+# When enabled, local users are change-rooted to their home directories after logging in
+chroot_local_user=YES
+# When enabled, all non-anonymous users are logged in as the user guest, which is the local 
+# user specified in the guest_username directive
+guest_enable=YES
+# Specifies the username the guest user is mapped to
+guest_username=ftp
+# When enabled, all directory listings show ftp as the user and group for each file
+hide_ids=YES
+# When enabled, vsftpd runs in stand-alone mode. Red Hat Enterprise Linux sets this value 
+# to YES. This directive cannot be used in conjunction with the listen_ipv6 directive
+listen=YES
+# When enabled, local users are allowed to log into the system.
+local_enable=YES
+# Specifies the maximum number of simultaneous clients allowed to connect to the server 
+# when it is running in standalone mode. Any additional client connections would result 
+# in an error message
+max_clients=100
+# Specifies the maximum of clients allowed to connected from the same source IP address
+max_per_ip=2
+nopriv_user=ftp
+# Specifies the PAM service name for vsftpd
+pam_service_name=ftp
+# When enabled, passive mode connects are allowed
+pasv_enable=YES
+# When enabled, vsftpd attempts to maintain login sessions for each user through 
+# Pluggable Authentication Modules (PAM). If session logging is not necessary, disabling
+# this option allows vsftpd to run with less processes and lower privileges
+session_support=NO
+# When enabled, directory listings reveal the local time for the computer instead of GMT
+use_localtime=YES
+# Specifies the path to a directory containing configuration files bearing the name of
+# local system users that contain specific setting for that user
+user_config_dir=/etc/vsftpd/users
+# When enabled, the users listed in the file specified by the userlist_file directive are
+# denied access. Because access is denied before the client is asked for a password, users
+# are prevented from submitting unencrypted passwords over the network.
+userlist_enable=YES
+# Specifies the file referenced by vsftpd when the userlist_enable directive is enabled
+userlist_file=/etc/vsftpd/denied_users
+# When enabled, vsftpd logs connections (vsftpd format only) and file transfer information
+# to the log file specified in the vsftpd_log_file directive (/var/log/vsftpd.log by default).
+# If xferlog_std_format is set to YES, file transfer information is logged but connections
+# are not, and the log file specified in xferlog_file (/var/log/xferlog by default) is used
+# instead. It is important to note that both log files and log formats are used if
+# dual_log_enable is set to YES.
+xferlog_enable=YES
+anon_umask=0027
+# Specifies the umask value for file creation. Note that the default value is in octal form
+# (a numerical system with a base of eight), which includes a "0" prefix. Otherwise the value
+# is treated as a base-10 integer.
+local_umask=022
+async_abor_enable=YES
+# When enabled, vsftpd runs with enough privileges to open port 20 on the server during active
+# mode data transfers. Disabling this option allows vsftpd to run with less privileges, but
+# may be incompatible with some FTP clients.
+connect_from_port_20=YES
+# When enabled, users are allowed to view directory lists
+dirlist_enable=NO
+# When enabled, file downloads are permitted
+download_enable=NO
+virtual_use_local_privs=YES
+EOF
+{% endhighlight %}
+
+Creating black list based on current local users:
+
+{% highlight bash %}
+cat /etc/passwd | cut -d ":" -f 1 | sort > /etc/vsftpd/denied_users
+chmod 644 /etc/vsftpd/denied_users
+{% endhighlight %}
+
+Creating directory for user specific configuration:
+
+{% highlight bash %}
+mkdir /etc/vsftpd/users
+{% endhighlight %}
+
+Configuring PAM module for FTP:
+
+{% highlight bash %}
+cat <<EOF> /etc/pam.d/ftp
+auth    required pam_userdb.so db=/etc/vsftpd/accounts
+account required pam_userdb.so db=/etc/vsftpd/accounts
+EOF
+{% endhighlight %}
+
+Running vsftpd on system start:
+
+{% highlight bash %}
+chkconfig vsftpd on
+{% endhighlight %}
+
+Creating new virtual user:
+
+{% highlight bash %}
+export FTP_USER=username
+export FTP_PASS=userpass
+export FTP_HOME=/var/ftp/virtual_users/$FTP_USER/
+echo $FTP_USER > /etc/vsftpd/accounts.tmp
+echo $FTP_PASS >> /etc/vsftpd/accounts.tmp
+/usr/bin/db_load -T -t hash -f  /etc/vsftpd/accounts.tmp /etc/vsftpd/accounts.db
+chmod 600 /etc/vsftpd/accounts.db
+rm -f /etc/vsftpd/accounts.tmp
+{% endhighlight %}
+
+Creating directory for new user:
+
+{% highlight bash %}
+mkdir -p $FTP_HOME
+chown -R ftp:ftp $FTP_HOME
+chmod 755 $FTP_HOME
+chcon -t public_content_rw_t $FTP_HOME
+{% endhighlight %}
+
+Creating configuration for new user:
+
+{% highlight bash %}
+cat <<EOF> /etc/vsftpd/users/$FTP_USER
+dirlist_enable=YES
+download_enable=YES
+write_enable=YES
+local_root=$FTP_HOME
+EOF
+{% endhighlight %}
+
+To configure firewall, new module should be added in /etc/sysconfig/iptables-config:
+
+{% highlight bash %}
+IPTABLES_MODULES="ip_conntrack_ftp"
+{% endhighlight %}
+
+and new rules:
+
+{% highlight bash %}
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 21 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 64000:65535 -j ACCEPT
+{% endhighlight %}
+
+then restart firewall:
+
+{% highlight bash %}
+service iptables restart
+{% endhighlight %}
+
+The last step is starting vsftpd:
+
+{% highlight bash %}
+service vsftpd start
+{% endhighlight %}
+
+I hope, this simple instruction will save someone's precious time :)
